@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="ydn.js"></script>
+    <style>
+      button {
+        height: 30px;
+        min-width: 30px;
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="min-width:max-content">
+    <br>
+
+    <button id="changeColor"></button>
+    <button id="refreshPrs">REFRESH</button>
+    <button id="showPrs">Show Prs</button>
+    <button id="checkForNewPrs">Check for new PRs</button>
+    <button id="showRequireMyApproval">Toggle PRs requiring my approval</button>
+    <button id="showMyPrs">Toggle my PRs</button>
+
+    <script src="options.js"></script>
+    <script src="popup.js"></script>
+
+    <br>
+
+    <div id="pr-info"></div>
+    <div id="prs"></div>
+  </div>
+  </body>
+
+  <footer id="info">
+    <!-- <button id="toggleAlarm">Activate alarm</button> -->
+    <!-- <script src="alarms.js"></script> -->
+  </footer>
+</html>
