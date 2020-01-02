@@ -1,10 +1,5 @@
 'use strict';
 
-// chrome.alarms.onAlarm.addListener(function( alarm ) {
-//   console.log("Got an alarm!", alarm);
-//   localStorage.setItem('gotANalarm', localStorage.getItem('gotANalarm') + 'z');
-// });
-
 let changeColor = document.getElementById('changeColor');
 let refreshPrs = document.getElementById('refreshPrs');
 let showPrs = document.getElementById('showPrs');
@@ -55,16 +50,6 @@ refreshPrs.onclick = function(element) {
     console.log('Getting all PRs');
     getPrJson('all');
   }, 1000); 
-
-  // var check = function() {
-  //   if (window.dbCleared) {
-  //       console.log('db cleared');
-  //       getPrJson('all');
-  //   } else {
-  //     console.log('check db cleared');
-  //       setTimeout(check, 1000); // check again in a second
-  //   }
-  // }
 };
 
 showRequireMyApproval.onclick = function(element) {
@@ -95,10 +80,6 @@ chrome.alarms.create('remindme', {
   delayInMinutes: 1,
   periodInMinutes: 5
 });
-
-// chrome.alarms.onAlarm.addListener(function( alarm ) {
-//   tryGetPrJson();
-// });
 
 displayPrs();
 
@@ -151,20 +132,7 @@ function getPrJson(update_pr_id = null) {
             "Authorization": "Basic " + btoa(username + ":" + password)
           },
         dataType: "json",
-        success: function(data) { 
-            // console.log(data);
-            // localStorage.setItem('BB-PRs-JSON', JSON.stringify(data));
-
-            // data.values.forEach(element => {
-            //   console.log(element.id);
-            //   console.log(element.title);
-            //   db.put('bitbucket-prs', {
-            //     id: element.id,
-            //     title: element.title,
-            //     author: element.author.display_name,
-            //     pr_link: element.links.self.href
-            //   }, 
-            //   element.id);
+        success: function(data) {
 
             data.values.forEach(element => {
               if (localStorage.getItem('bb-pr-id-counter') < element.id) {
