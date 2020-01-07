@@ -19,8 +19,8 @@ var schema = {
       name: 'approved_by_me'
     },
     {
-       name: 'id, title, author, approvals, comments, link, state, approved_by_me',
-       keyPath: ['id', 'title', 'author', 'approvals', 'comments', 'link', 'state', 'approved_by_me']
+       name: 'id, title, author, approvals, comments, link, state, approved_by_me, destination_branch',
+       keyPath: ['id', 'title', 'author', 'approvals', 'comments', 'link', 'state', 'approved_by_me', 'destination_branch']
     }]
   }]
 },
@@ -196,7 +196,8 @@ function getPR(link) {
               state: data.state,
               num_comments: data.comment_count,
               reviewers: reviewers,
-              approved_by_me: approved_by_me
+              approved_by_me: approved_by_me,
+              destination_branch: data.destination.branch.name
             },
             data.id);
 
@@ -240,6 +241,7 @@ function displayPrs() {
           '<p class="id" style="inline-block">' + element.id + '</p>' +
           '<p class="author" style="inline-block; margin-left: 10px">' + element.author + '</p>' +
           '<p class="title" style="inline-block; margin-left: 10px">' + element.title + '</p>' +
+          '<p class="destination_branch" style="inline-block; margin-left: 10px">' + element.destination_branch + '</p>' +
           '<p class="reviewers" style="inline-block; margin-left: 10px">' + reviewers + '</p>' +
           '<p class="num_comments" style="inline-block; margin-left: 10px">' + element.num_comments + ' comments</p>' +
           '<p class="approved_by_me" style="inline-block; margin-left: 10px">Approved by me: ' + element.approved_by_me + '</p>' +
