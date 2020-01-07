@@ -217,11 +217,13 @@ function displayPrs() {
   var limit = 20;
   var num_prs = 0;
   var num_approved_by_me = 0;
+  var num_my_prs = 0;
 
   q.list(limit).done(function(objs) {
     objs.forEach(element => {
       console.log(element);
       num_prs++;
+      num_my_prs += (element.author === 'Mike Beck');
       var reviewers = '';
       var num_approvals = 0;
       element.reviewers.forEach(reviewer => {
@@ -254,7 +256,7 @@ function displayPrs() {
 
     $('#pr-info').append(
       '<p>' + num_prs + ' open PRs</p>' +
-      '<p>' + (num_prs - num_approved_by_me) + ' not yet approved by me</p>'
+      '<p>' + (num_prs - num_approved_by_me - num_my_prs) + ' not yet approved by me</p>'
     );
   });
 }
