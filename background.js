@@ -15,21 +15,41 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 function getPrJson2() {
-  jQuery.ajax({
-      url: "https://bitbucket.org/api/2.0/repositories/" + repo_owner + "/" + repo_name + "/pullrequests/",
-      method: "GET",
-      headers: {
-          "Authorization": "Basic " + btoa(username + ":" + password)
-        },
-      dataType: "json",
-      success: function(data) { 
-          data.values.forEach(element => {
-            if (localStorage.getItem('bb-pr-id-counter') < element.id) {
-              localStorage.setItem('bb-pr-id-counter', element.id);
-              
-              alert('new PRs!');
-            }
-          });
-      }
-  })    
+  $.ajax({
+    url: 'options.js',
+    dataType: "script",
+    async: true,
+    success: function () {
+        var num_unseen_prs = 0;
+        jQuery.ajax({
+          url: "https://bitbucket.org/api/2.0/repositories/" + repo_owner + "/" + repo_name + "/pullrequests/",
+          method: "GET",
+          headers: {
+              "Authorization": "Basic " + btoa(username + ":" + password)
+            },
+          dataType: "json",
+          success: function(data) { 
+              data.values.forEach(element => {
+                if (localStorage.getItem('bb-pr-id-counter') < element.id) {
+                  localStorage.setItem('bb-pr-id-counter', element.id);
+                  num_unseen_prs++;
+                }
+              });
+
+              chrome.browserAction.setBadgeBackgroundColor({ color: [0, 150, 255, 255] });
+              if (num_unseen_prs > 0) {
+                chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
+              }
+
+              chrome.browserAction.setBadgeText({text: String(num_unseen_prs)});
+          }
+      })
+    },
+    error: function () {
+        chrome.browserAction.setBadgeBackgroundColor({ color: [0, 0, 0, 255] });
+        chrome.browserAction.setBadgeText({text: 'ERR'});
+        throw new Error("Could not load script " + script);
+    }
+});
+    
 }
