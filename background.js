@@ -2,6 +2,14 @@
 
 chrome.runtime.onInstalled.addListener(function() {
   chrome.alarms.onAlarm.addListener(function( alarm ) {
+    var today = new Date()
+    var curHr = today.getHours()
+
+    if (curHr < 8 || curHr > 18) {
+      return;
+    }
+    
+    console.log('checking for prs');
     getPrJson2();
   });
 });
