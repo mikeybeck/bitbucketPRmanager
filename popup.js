@@ -19,8 +19,8 @@ var schema = {
       name: 'approved_by_me'
     },
     {
-       name: 'id, title, author, approvals, comments, link, state, approved_by_me, destination_branch',
-       keyPath: ['id', 'title', 'author', 'approvals', 'comments', 'link', 'state', 'approved_by_me', 'destination_branch']
+       name: 'id, title, author, approvals, num_comments, link, state, approved_by_me, destination_branch',
+       keyPath: ['id', 'title', 'author', 'approvals', 'num_comments', 'link', 'state', 'approved_by_me', 'destination_branch']
     }]
   }]
 },
