@@ -19,8 +19,8 @@ var schema = {
       name: 'approved_by_me'
     },
     {
-       name: 'id, title, author, approvals, num_comments, link, state, approved_by_me, destination_branch',
-       keyPath: ['id', 'title', 'author', 'approvals', 'num_comments', 'link', 'state', 'approved_by_me', 'destination_branch']
+       name: 'id, title, author, approvals, num_comments, num_comments_prev, link, state, approved_by_me, destination_branch',
+       keyPath: ['id', 'title', 'author', 'approvals', 'num_comments', 'num_comments_prev', 'link', 'state', 'approved_by_me', 'destination_branch']
     }]
   }]
 },
@@ -175,19 +175,26 @@ function getPR(link) {
               }
             });
 
-            db.put('bitbucket-prs', {
-              id: data.id,
-              title: data.title,
-              author: data.author.display_name,
-              api_link: data.links.self.href,
-              html_link: data.links.html.href,
-              state: data.state,
-              num_comments: data.comment_count,
-              reviewers: reviewers,
-              approved_by_me: approved_by_me,
-              destination_branch: data.destination.branch.name
-            },
-            data.id);
+            // Get num_comments
+            var num_comments_prev = 0;
+            db.get('bitbucket-prs', data.id).done(function(record) {
+              num_comments_prev = record.num_comments;
+
+              db.put('bitbucket-prs', {
+                id: data.id,
+                title: data.title,
+                author: data.author.display_name,
+                api_link: data.links.self.href,
+                html_link: data.links.html.href,
+                state: data.state,
+                num_comments: data.comment_count,
+                num_comments_prev: num_comments_prev,
+                reviewers: reviewers,
+                approved_by_me: approved_by_me,
+                destination_branch: data.destination.branch.name
+              },
+              data.id);
+            });
 
             displayPrs();
         }
@@ -233,7 +240,7 @@ function displayPrs() {
           '<p class="title" style="inline-block; margin-left: 10px">' + element.title + '</p>' +
           '<p class="destination_branch" style="inline-block; margin-left: 10px">' + element.destination_branch + '</p>' +
           '<p class="reviewers" style="inline-block; margin-left: 10px">' + reviewers + '</p>' +
-          '<p class="num_comments" style="inline-block; margin-left: 10px">' + element.num_comments + ' comments</p>' +
+          '<p class="num_comments" style="inline-block; margin-left: 10px">' + element.num_comments + ' comments (' + (parseInt(element.num_comments_prev) - parseInt(element.num_comments)) + ' new)</p>' +
           '<p class="approved_by_me" style="inline-block; margin-left: 10px">Approved by me: ' + element.approved_by_me + '</p>' +
           '</a>' +
           '<button class="refresh_pr" pr_link="' + element.api_link + '">Refresh</button>' +
