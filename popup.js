@@ -178,7 +178,9 @@ function getPR(link) {
             // Get num_comments
             var num_comments_prev = 0;
             db.get('bitbucket-prs', data.id).done(function(record) {
-              num_comments_prev = record.num_comments;
+              if (typeof record !== 'undefined') {
+                num_comments_prev = record.num_comments;
+              }
 
               db.put('bitbucket-prs', {
                 id: data.id,
