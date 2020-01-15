@@ -20,7 +20,7 @@ function getPrJson2() {
     dataType: "script",
     async: true,
     success: function () {
-        var num_unseen_prs = 0;
+        var num_unseen_prs = localStorage.getItem('num-unseen-prs');
         jQuery.ajax({
           url: "https://bitbucket.org/api/2.0/repositories/" + repo_owner + "/" + repo_name + "/pullrequests/",
           method: "GET",
@@ -42,6 +42,8 @@ function getPrJson2() {
               }
 
               chrome.browserAction.setBadgeText({text: String(num_unseen_prs)});
+
+              localStorage.setItem('num-unseen-prs', num_unseen_prs);
           }
       })
     },

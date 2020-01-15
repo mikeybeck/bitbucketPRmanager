@@ -26,6 +26,8 @@ var schema = {
 },
 db = new ydn.db.Storage('db-name', schema);
 
+localStorage.setItem('num-unseen-prs', 0);
+
 checkForNewPrs.onclick = function(element) {
   tryGetPrJson();
 };
