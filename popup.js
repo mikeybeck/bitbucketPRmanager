@@ -175,12 +175,7 @@ function getPR(link) {
               }
             });
 
-            // Get num_comments
-            var num_comments_prev = 0;
-            db.get('bitbucket-prs', data.id).done(function(record) {
-              if (typeof record !== 'undefined') {
-                num_comments_prev = record.num_comments;
-              }
+              localStorage.setItem(data.id + '_num_comments_prev', data.comment_count);
 
               db.put('bitbucket-prs', {
                 id: data.id,
@@ -190,13 +185,11 @@ function getPR(link) {
                 html_link: data.links.html.href,
                 state: data.state,
                 num_comments: data.comment_count,
-                num_comments_prev: num_comments_prev,
                 reviewers: reviewers,
                 approved_by_me: approved_by_me,
                 destination_branch: data.destination.branch.name
               },
               data.id);
-            });
 
             displayPrs();
         }
@@ -242,7 +235,7 @@ function displayPrs() {
           '<p class="title" style="inline-block; margin-left: 10px">' + element.title + '</p>' +
           '<p class="destination_branch" style="inline-block; margin-left: 10px">' + element.destination_branch + '</p>' +
           '<p class="reviewers" style="inline-block; margin-left: 10px">' + reviewers + '</p>' +
-          '<p class="num_comments" style="inline-block; margin-left: 10px">' + element.num_comments + ' comments (' + (parseInt(element.num_comments_prev) - parseInt(element.num_comments)) + ' new)</p>' +
+          '<p class="num_comments" style="inline-block; margin-left: 10px">' + element.num_comments + ' comments (' + (parseInt(element.num_comments) - parseInt(localStorage.getItem(element.id + '_num_comments_prev'))) + ' new)</p>' +
           '<p class="approved_by_me" style="inline-block; margin-left: 10px">Approved by me: ' + element.approved_by_me + '</p>' +
           '</a>' +
           '<button class="refresh_pr" pr_link="' + element.api_link + '">Refresh</button>' +
