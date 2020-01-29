@@ -243,7 +243,7 @@ function displayPrs() {
       if (!do_not_show) {
         $('#prs').append(
           '<div id="' + element.id + '" style="background-color:' + (num_approvals > 1 ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)') + '">' +
-          '<a href="' + element.html_link + '">' +
+          '<a href="' + element.html_link + '" target="_blank">' +
           '<p class="id" style="inline-block">' + element.id + '</p>' +
           '<p class="author" style="inline-block; margin-left: 10px">' + element.author + '</p>' +
           '<p class="title" style="inline-block; margin-left: 10px">' + element.title + '</p>' +
