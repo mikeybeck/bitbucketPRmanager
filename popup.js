@@ -153,7 +153,7 @@ function getPR(link) {
           },
         dataType: "json",
         success: function(data) {
-            localStorage.setItem('BB-PR-JSON-' + data.id, JSON.stringify(data));
+            //localStorage.setItem('BB-PR-JSON-' + data.id, JSON.stringify(data));
 
             var db = new ydn.db.Storage('db-name', schema),
             reviewers = [],
