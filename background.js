@@ -30,8 +30,8 @@ function getPrJson2() {
           dataType: "json",
           success: function(data) { 
               data.values.forEach(element => {
-                if (localStorage.getItem('bb-pr-id-counter') < element.id) {
-                  localStorage.setItem('bb-pr-id-counter', element.id);
+                if (localStorage.getItem('bb-pr-id-counter-bg') < element.id) {
+                  localStorage.setItem('bb-pr-id-counter-bg', element.id);
                   num_unseen_prs++;
                 }
               });
