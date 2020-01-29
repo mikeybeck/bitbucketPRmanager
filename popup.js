@@ -175,7 +175,17 @@ function getPR(link) {
               }
             });
 
-              localStorage.setItem(data.id + '_num_comments_prev', data.comment_count);
+
+              localStorage.setItem(data.id + '_num_comments_prev', localStorage.getItem(data.id + '_num_comments'));
+              localStorage.setItem(data.id + '_num_comments', data.comment_count);
+
+              let last_source_commit_hash = localStorage.getItem(data.id + '_last_source_commit_hash');
+              let new_commits_added = false;
+              localStorage.setItem(data.id + '_last_source_commit_hash_prev', last_source_commit_hash);
+              localStorage.setItem(data.id + '_last_source_commit_hash', data.source.commit.hash);
+              if (last_source_commit_hash !== data.source.commit.hash) {
+                new_commits_added = true;
+              }
 
               db.put('bitbucket-prs', {
                 id: data.id,
@@ -187,7 +197,8 @@ function getPR(link) {
                 num_comments: data.comment_count,
                 reviewers: reviewers,
                 approved_by_me: approved_by_me,
-                destination_branch: data.destination.branch.name
+                destination_branch: data.destination.branch.name,
+                new_commits_added: new_commits_added
               },
               data.id);
 
@@ -237,6 +248,7 @@ function displayPrs() {
           '<p class="reviewers" style="inline-block; margin-left: 10px">' + reviewers + '</p>' +
           '<p class="num_comments" style="inline-block; margin-left: 10px">' + element.num_comments + ' comments (' + (parseInt(element.num_comments) - parseInt(localStorage.getItem(element.id + '_num_comments_prev'))) + ' new)</p>' +
           '<p class="approved_by_me" style="inline-block; margin-left: 10px">Approved by me: ' + element.approved_by_me + '</p>' +
+          '<p class="new_commits_added" style="inline-block; margin-left: 10px; color:' + (element.new_commits_added ? 'green' : 'red') + '">New commits added: ' + element.new_commits_added + '</p>' +
           '</a>' +
           '<button class="refresh_pr" pr_link="' + element.api_link + '">Refresh</button>' +
           '</div>'
