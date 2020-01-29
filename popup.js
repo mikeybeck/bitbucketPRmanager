@@ -114,7 +114,7 @@ function tryGetPrJson() {
 
 function getPrJson(update_pr_id = null) {
     jQuery.ajax({
-        url: "https://bitbucket.org/api/2.0/repositories/" + repo_owner + "/" + repo_name + "/pullrequests/",
+        url: "https://bitbucket.org/api/2.0/repositories/" + repo_owner + "/" + repo_name + "/pullrequests/?pagelen=20", // Get max 20 PRs
         method: "GET",
         headers: {
             "Authorization": "Basic " + btoa(username + ":" + password)
