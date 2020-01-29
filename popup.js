@@ -232,12 +232,15 @@ function displayPrs() {
         num_approved_by_me += (reviewer.name === 'Mike Beck' && reviewer.approved);
         reviewers += '<span style="padding-right:10px; color:' + (reviewer.approved ? 'green' : 'red') + '">' + reviewer.name + '</span>';
       });
+      let num_new_comments = (parseInt(element.num_comments) - parseInt(localStorage.getItem(element.id + '_num_comments_prev')));
 
-      let do_not_show = (element.author == 'Mike Beck' && (localStorage.getItem('show_my_prs') == 'false'));
+      let do_not_show = (element.author == 'Mike Beck' && (localStorage.getItem('show_my_prs') == 'false')) || 
+        (localStorage.getItem('show_require_approval') == 'true' && element.approved_by_me && element.new_commits_added == false && num_new_comments == 0);
+
       console.log(do_not_show);
       console.log(element.author);
 
-      if (((localStorage.getItem('show_require_approval') == 'false') || !element.approved_by_me) && !do_not_show) {
+      if (!do_not_show) {
         $('#prs').append(
           '<div id="' + element.id + '" style="background-color:' + (num_approvals > 1 ? 'rgba(0, 255, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)') + '">' +
           '<a href="' + element.html_link + '">' +
@@ -246,7 +249,7 @@ function displayPrs() {
           '<p class="title" style="inline-block; margin-left: 10px">' + element.title + '</p>' +
           '<p class="destination_branch" style="inline-block; margin-left: 10px">' + element.destination_branch + '</p>' +
           '<p class="reviewers" style="inline-block; margin-left: 10px">' + reviewers + '</p>' +
-          '<p class="num_comments" style="inline-block; margin-left: 10px">' + element.num_comments + ' comments (' + (parseInt(element.num_comments) - parseInt(localStorage.getItem(element.id + '_num_comments_prev'))) + ' new)</p>' +
+          '<p class="num_comments" style="inline-block; margin-left: 10px">' + element.num_comments + ' comments (' + num_new_comments + ' new)</p>' +
           '<p class="approved_by_me" style="inline-block; margin-left: 10px">Approved by me: ' + element.approved_by_me + '</p>' +
           '<p class="new_commits_added" style="inline-block; margin-left: 10px; color:' + (element.new_commits_added ? 'green' : 'red') + '">New commits added: ' + element.new_commits_added + '</p>' +
           '</a>' +
